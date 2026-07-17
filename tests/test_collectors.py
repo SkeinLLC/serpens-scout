@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from serpens_scout.collectors import doh, reports
+from serpens_scout.collectors import doh, github, reports
 
 
 def test_dns_failure_produces_partial_observation(monkeypatch) -> None:
@@ -14,6 +14,10 @@ def test_dns_failure_produces_partial_observation(monkeypatch) -> None:
     assert observations[0]["status"] == "collection-error"
     assert observations[0]["answers"] == []
     assert "429" in observations[0]["error"]
+
+
+def test_github_content_decoder_accepts_api_line_wrapping() -> None:
+    assert github._decode_base64_content("aGVs\nbG8=\n") == b"hello"
 
 
 def test_report_extraction_fails_closed_below_safety_threshold(monkeypatch) -> None:
