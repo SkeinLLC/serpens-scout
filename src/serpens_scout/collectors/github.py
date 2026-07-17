@@ -62,7 +62,8 @@ def collect_github_baseline(limit: int = 20) -> dict[str, object]:
         )
         if index == 0:
             broad_items = result.get("items", [])[:limit]
-        time.sleep(0.15)
+        # GitHub Code Search can enforce a 10-requests-per-minute resource bucket.
+        time.sleep(6.5)
 
     samples: list[dict[str, object]] = []
     for item in broad_items:
