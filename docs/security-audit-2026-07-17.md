@@ -60,6 +60,11 @@ stayed in a temporary directory and wasn't added to this repository.
 GitCred doesn't replace a credential scanner. Gitleaks supplied the history and working-tree
 secret check in this audit.
 
+GitHub's built-in workflow token returned HTTP 429 for every Code Search query and remained
+limited across multiple reset windows. The HTTP client now honors `Retry-After` and
+`X-RateLimit-Reset`, but the scheduled job only runs the optional code baseline when the
+read-only `SERPENS_GITHUB_TOKEN` secret exists. Report and DNS collection don't depend on it.
+
 ## Remaining work
 
 The pull request must pass hosted Python 3.12 CI before merge. The lock files were generated and

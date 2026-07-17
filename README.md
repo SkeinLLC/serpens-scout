@@ -56,6 +56,13 @@ serpens-scout hunt --out research\latest --github-limit 40
 Remove-Item Env:\GITHUB_TOKEN
 ```
 
+The scheduled workflow reads the optional `SERPENS_GITHUB_TOKEN` secret from the
+`passive-research` Actions environment. Use a dedicated token with public-code read access and
+no write scope. Without that secret, the workflow still collects report deltas and DNS
+observations but marks the GitHub baseline as skipped. GitHub's built-in workflow token returned
+HTTP 429 for Code Search even after its reported reset time, so the schedule doesn't use it for
+this optional source.
+
 Outputs:
 
 - `findings.md`: human report with network indicators defanged.

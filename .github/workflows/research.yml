@@ -20,6 +20,7 @@ jobs:
   hunt:
     name: Passive collection
     runs-on: ubuntu-latest
+    environment: passive-research
     timeout-minutes: 15
     steps:
       - name: Check out source without persisted credentials
@@ -41,7 +42,7 @@ jobs:
           python -m pip install --no-build-isolation --no-deps -e .
       - name: Run bounded passive collection
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.SERPENS_GITHUB_TOKEN }}
         run: serpens-scout hunt --out research-output --github-limit 40
       - name: Upload research receipt
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
