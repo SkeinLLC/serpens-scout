@@ -62,10 +62,10 @@ secret check in this audit.
 
 ## Remaining work
 
-The pull request must pass hosted Python 3.12 CI before merge because the lock files were
-generated on local Python 3.14. After merge, require immutable Action SHAs in repository settings
-and turn on the new protected-branch check. GitHub currently leaves non-provider secret patterns
-and secret-validity checks disabled for this repository.
+The pull request must pass hosted Python 3.12 CI before merge. The lock files were generated and
+tested locally with Python 3.12.13. After merge, require immutable Action SHAs in repository
+settings and turn on the new protected-branch check. GitHub currently leaves non-provider secret
+patterns and secret-validity checks disabled for this repository.
 
 Later research should add parser fuzzing and run the config detector across an approved
 known-good .NET corpus. Those tasks affect assurance and false-positive measurement; they don't
