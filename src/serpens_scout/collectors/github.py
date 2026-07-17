@@ -28,6 +28,12 @@ def _headers(token: str) -> dict[str, str]:
     }
 
 
+def _decode_base64_content(value: str) -> bytes:
+    """Decode GitHub content API payloads after removing documented line wrapping."""
+
+    return base64.b64decode("".join(value.split()), validate=True)
+
+
 def _search(query: str, token: str, per_page: int) -> dict[str, object]:
     encoded = urllib.parse.urlencode({"q": query, "per_page": per_page})
     return get_json(f"https://api.github.com/search/code?{encoded}", _headers(token))
@@ -94,7 +100,7 @@ def collect_github_baseline(limit: int = 20) -> dict[str, object]:
         if content.get("encoding") != "base64" or not isinstance(encoded_content, str):
             continue
         try:
-            data = base64.b64decode(encoded_content, validate=True)
+            data = _decode_base64_content(encoded_content)
         except (binascii.Error, ValueError):
             errors.append(f"content fetch returned invalid base64: {html_url}")
             continue
