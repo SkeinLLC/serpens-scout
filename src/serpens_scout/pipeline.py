@@ -16,7 +16,8 @@ def hunt(output: Path, github_limit: int = 20, skip_dns: bool = False) -> dict[s
     output.mkdir(parents=True, exist_ok=True)
     reports = collect_reports()
     delta = reports["delta"]
-    assert isinstance(delta, dict)
+    if not isinstance(delta, dict):
+        raise RuntimeError("invalid report delta structure")
     dns = [] if skip_dns else resolve_domains(delta["domains"])
     github = collect_github_baseline(github_limit)
     result = {

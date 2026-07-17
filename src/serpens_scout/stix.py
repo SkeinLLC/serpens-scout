@@ -53,17 +53,21 @@ def _indicator(
 def build_bundle(research: dict[str, object]) -> dict[str, object]:
     created = _timestamp()
     sources = research["sources"]
-    assert isinstance(sources, dict)
+    if not isinstance(sources, dict):
+        raise RuntimeError("invalid STIX source structure")
     objects: list[dict[str, object]] = []
     unit = sources["unit42"]
     check = sources["checkpoint"]
-    assert isinstance(unit, dict) and isinstance(check, dict)
+    if not isinstance(unit, dict) or not isinstance(check, dict):
+        raise RuntimeError("invalid STIX publisher structure")
     unit_source = unit["source"]
     check_source = check["source"]
-    assert isinstance(unit_source, dict) and isinstance(check_source, dict)
+    if not isinstance(unit_source, dict) or not isinstance(check_source, dict):
+        raise RuntimeError("invalid STIX reference structure")
     unit_iocs = unit["iocs"]
     delta = research["delta"]
-    assert isinstance(unit_iocs, dict) and isinstance(delta, dict)
+    if not isinstance(unit_iocs, dict) or not isinstance(delta, dict):
+        raise RuntimeError("invalid STIX indicator structure")
     for kind in ("domains", "sha256"):
         for value in unit_iocs[kind]:
             objects.append(_indicator(kind, value, unit_source, "unit42-baseline", created))

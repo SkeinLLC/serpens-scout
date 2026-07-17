@@ -70,8 +70,22 @@ serpens-scout scan C:\path\to\software --out scan.json
 serpens-scout scan C:\path\to\delivery.zip --out archive-scan.json
 ```
 
-The archive reader caps nesting, extracted size, and compression ratio. It does not
-write archive members to disk.
+The archive reader caps nesting, member count, extracted size, and compression ratio. It does
+not follow symbolic links or write archive members to disk. XML parsing blocks DTDs and entity
+expansion.
+
+## Security controls
+
+- Network requests permit HTTPS on port 443 to four named services. Cross-host redirects fail.
+- Response, file, archive, nesting, and member-count limits bound untrusted input processing.
+- CI dependencies use hash-locked requirement files; GitHub Actions use immutable commit SHAs.
+- Bandit, pip-audit, Ruff security rules, Zizmor, YARA fixtures, and unit tests run on every push
+  and pull request.
+- GitHub secret scanning, push protection, dependency alerts, private reporting, and CodeQL
+  setup are enabled in the repository settings. Actions are limited to GitHub-owned sources.
+
+The dated [security audit](docs/security-audit-2026-07-17.md) records the threat boundaries,
+tool receipts, corrections, and remaining repository-control work.
 
 ## Detection model
 

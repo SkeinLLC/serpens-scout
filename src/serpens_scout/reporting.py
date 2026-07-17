@@ -15,18 +15,26 @@ def _items(values: list[str], transform=lambda value: value) -> str:  # noqa: B0
 
 def build_markdown(result: dict[str, object]) -> str:
     reports = result["reports"]
-    assert isinstance(reports, dict)
+    if not isinstance(reports, dict):
+        raise RuntimeError("invalid reporting structure: reports")
     sources = reports["sources"]
     delta = reports["delta"]
     overlap = reports["overlap"]
     corrections = reports.get("probable_source_corrections", [])
-    assert isinstance(sources, dict) and isinstance(delta, dict) and isinstance(overlap, dict)
+    if (
+        not isinstance(sources, dict)
+        or not isinstance(delta, dict)
+        or not isinstance(overlap, dict)
+    ):
+        raise RuntimeError("invalid reporting structure: source sets")
     unit_iocs = sources["unit42"]["iocs"]
     check_iocs = sources["checkpoint"]["iocs"]
-    assert isinstance(unit_iocs, dict) and isinstance(check_iocs, dict)
+    if not isinstance(unit_iocs, dict) or not isinstance(check_iocs, dict):
+        raise RuntimeError("invalid reporting structure: indicators")
     dns = result.get("dns", [])
     github = result.get("github", {})
-    assert isinstance(dns, list) and isinstance(github, dict)
+    if not isinstance(dns, list) or not isinstance(github, dict):
+        raise RuntimeError("invalid reporting structure: enrichment")
 
     verdicts = Counter(
         sample["scan"]["verdict"]

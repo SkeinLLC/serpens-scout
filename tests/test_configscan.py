@@ -3,7 +3,12 @@ from __future__ import annotations
 import zipfile
 from pathlib import Path
 
-from serpens_scout.configscan import scan_config_bytes, scan_path
+from serpens_scout.configscan import (
+    MAX_ARCHIVE_MEMBERS,
+    MAX_MEMBER_BYTES,
+    scan_config_bytes,
+    scan_path,
+)
 
 FIXTURES = Path(__file__).parent / "fixtures"
 
@@ -44,3 +49,28 @@ def test_malformed_xml_fails_closed() -> None:
 def test_missing_etw_value_is_not_treated_as_disabled() -> None:
     result = scan_config_bytes(b"<configuration><runtime><etwEnable /></runtime></configuration>")
     assert "etw_disabled" not in result.signals
+
+
+def test_xml_entities_are_blocked() -> None:
+    data = b'<!DOCTYPE x [<!ENTITY y "expanded">]><configuration>&y;</configuration>'
+    result = scan_config_bytes(data, "entity.config")
+    assert result.verdict == "unsafe-xml"
+    assert "blocked" in (result.error or "")
+
+
+def test_direct_config_read_is_bounded(tmp_path: Path) -> None:
+    config = tmp_path / "oversized.config"
+    config.write_bytes(b"x" * (MAX_MEMBER_BYTES + 1))
+    result = scan_path(config)
+    assert result[0].verdict == "not-scanned"
+    assert result[0].error == "file exceeds size limit"
+
+
+def test_archive_member_count_is_bounded(tmp_path: Path) -> None:
+    archive = tmp_path / "many-members.zip"
+    with zipfile.ZipFile(archive, "w") as output:
+        for index in range(MAX_ARCHIVE_MEMBERS + 1):
+            output.writestr(f"empty-{index}.txt", b"")
+    result = scan_path(archive)
+    assert result[0].verdict == "not-scanned"
+    assert result[0].error == "archive member-count limit exceeded"

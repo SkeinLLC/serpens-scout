@@ -4,25 +4,58 @@ on:
   push:
   pull_request:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
+env:
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+  PIP_NO_INPUT: "1"
+
 jobs:
   test:
+    name: Test and security audit
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-python@v6
+      - name: Check out source without persisted credentials
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: "3.12"
           cache: pip
-      - run: python -m pip install -e ".[dev]"
-      - run: ruff check .
-      - run: pytest
+          cache-dependency-path: |
+            requirements-build.lock
+            requirements-ci.lock
+      - name: Install hash-locked dependencies
+        run: |
+          python -m pip install --require-hashes -r requirements-build.lock
+          python -m pip install --require-hashes -r requirements-ci.lock
+          python -m pip install --no-build-isolation --no-deps -e .
+      - name: Lint Python
+        run: ruff check .
+      - name: Audit Python source
+        run: bandit -r src -q
+      - name: Audit locked dependencies
+        run: pip-audit --require-hashes -r requirements-ci.lock --progress-spinner off
+      - name: Audit GitHub Actions
+        run: zizmor --persona auditor .
+      - name: Run tests
+        run: pytest
       - name: Validate YARA rule and fixtures
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq yara
-          yara rules/yara/appdomainmanager_serpens_config.yar tests/fixtures/serpens.config \
-            | grep DotNet_AppDomainManager
-          test -z "$(yara rules/yara/appdomainmanager_serpens_config.yar tests/fixtures/legitimate.config)"
+          python - <<'PY'
+          import yara
+
+          rule = yara.compile(filepath="rules/yara/appdomainmanager_serpens_config.yar")
+          if not rule.match("tests/fixtures/serpens.config"):
+              raise SystemExit("YARA rule did not match malicious fixture")
+          if rule.match("tests/fixtures/legitimate.config"):
+              raise SystemExit("YARA rule matched legitimate fixture")
+          PY
