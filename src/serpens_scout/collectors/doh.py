@@ -13,6 +13,18 @@ def resolve_domains(domains: list[str]) -> list[dict[str, object]]:
         query = urllib.parse.urlencode({"name": domain, "type": "A"})
         try:
             response = get_json(f"https://dns.google/resolve?{query}")
+            raw_answers = response.get("Answer", [])
+            if not isinstance(raw_answers, list):
+                raise ValueError("DNS response contained an invalid Answer field")
+            answers = [
+                {
+                    "data": answer.get("data"),
+                    "ttl": answer.get("TTL"),
+                    "type": answer.get("type"),
+                }
+                for answer in raw_answers
+                if isinstance(answer, dict) and answer.get("type") in {1, 5}
+            ]
         except (OSError, RuntimeError, ValueError) as exc:
             observations.append(
                 {
@@ -24,11 +36,6 @@ def resolve_domains(domains: list[str]) -> list[dict[str, object]]:
                 }
             )
             continue
-        answers = [
-            {"data": answer.get("data"), "ttl": answer.get("TTL"), "type": answer.get("type")}
-            for answer in response.get("Answer", [])
-            if answer.get("type") in {1, 5}
-        ]
         observations.append(
             {
                 "domain": domain,

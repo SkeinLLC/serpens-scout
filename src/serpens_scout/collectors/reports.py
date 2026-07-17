@@ -18,6 +18,8 @@ class SourceSpec:
     url: str
     start: str
     ends: tuple[str, ...]
+    min_domains: int
+    min_sha256: int
 
 
 SOURCES = (
@@ -28,6 +30,8 @@ SOURCES = (
         url="https://unit42.paloaltonetworks.com/tracking-iran-apt-screening-serpens/",
         start="Indicators of Compromise",
         ends=("Additional Resources", "Additional References", "Conclusion"),
+        min_domains=10,
+        min_sha256=5,
     ),
     SourceSpec(
         key="checkpoint",
@@ -39,6 +43,8 @@ SOURCES = (
         ),
         start="IOCs",
         ends=("GO UP", "Follow Us", "Check Point Research Publications"),
+        min_domains=10,
+        min_sha256=5,
     ),
 )
 
@@ -52,17 +58,21 @@ def collect_reports() -> dict[str, object]:
         if spec.start.lower() not in text.lower():
             raise RuntimeError(f"IOC section marker missing from {spec.publisher}")
         ioc_section = section(text, spec.start, spec.ends)
+        iocs = extract_iocs(ioc_section)
+        if len(iocs["domains"]) < spec.min_domains or len(iocs["sha256"]) < spec.min_sha256:
+            raise RuntimeError(f"IOC extraction below safety threshold for {spec.publisher}")
         records[spec.key] = {
             "source": asdict(spec),
             "fetched_at": fetched_at,
             "content_sha256": hashlib.sha256(document).hexdigest(),
             "section_found": ioc_section != text,
-            "iocs": extract_iocs(ioc_section),
+            "iocs": iocs,
         }
 
     baseline = records["unit42"]["iocs"]
     comparison = records["checkpoint"]["iocs"]
-    assert isinstance(baseline, dict) and isinstance(comparison, dict)
+    if not isinstance(baseline, dict) or not isinstance(comparison, dict):
+        raise RuntimeError("invalid report collection structure")
     delta = {
         kind: sorted(set(comparison[kind]) - set(baseline[kind]))
         for kind in ("domains", "sha256")

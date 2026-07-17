@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import base64
+import binascii
 import os
 import time
 import urllib.parse
@@ -61,26 +62,49 @@ def collect_github_baseline(limit: int = 20) -> dict[str, object]:
             }
         )
         if index == 0:
-            broad_items = result.get("items", [])[:limit]
+            items = result.get("items", [])
+            if not isinstance(items, list):
+                errors.append("GitHub search response contained an invalid items field")
+            else:
+                broad_items = [item for item in items if isinstance(item, dict)][:limit]
         # GitHub Code Search can enforce a 10-requests-per-minute resource bucket.
         time.sleep(6.5)
 
     samples: list[dict[str, object]] = []
     for item in broad_items:
+        repository = item.get("repository")
+        item_url = item.get("url")
+        path = item.get("path")
+        html_url = item.get("html_url")
+        if (
+            not isinstance(repository, dict)
+            or not isinstance(repository.get("full_name"), str)
+            or not isinstance(item_url, str)
+            or not isinstance(path, str)
+            or not isinstance(html_url, str)
+        ):
+            errors.append("GitHub search response contained an invalid result item")
+            continue
         try:
-            content = get_json(str(item["url"]), _headers(token))
+            content = get_json(item_url, _headers(token))
         except (OSError, RuntimeError, ValueError) as exc:
-            errors.append(f"content fetch failed: {item.get('html_url', 'unknown')}: {exc}")
+            errors.append(f"content fetch failed: {html_url}: {exc}")
             continue
-        if content.get("encoding") != "base64" or not content.get("content"):
+        encoded_content = content.get("content")
+        if content.get("encoding") != "base64" or not isinstance(encoded_content, str):
             continue
-        data = base64.b64decode(str(content["content"]))
-        scan = scan_config_bytes(data, f"{item['repository']['full_name']}:{item['path']}")
+        try:
+            data = base64.b64decode(encoded_content, validate=True)
+        except (binascii.Error, ValueError):
+            errors.append(f"content fetch returned invalid base64: {html_url}")
+            continue
+        full_name = repository["full_name"]
+        scan = scan_config_bytes(data, f"{full_name}:{path}")
         samples.append(
             {
-                "repository": item["repository"]["full_name"],
-                "path": item["path"],
-                "html_url": item["html_url"],
+                "repository": full_name,
+                "path": path,
+                "html_url": html_url,
                 "scan": scan.to_dict(),
             }
         )

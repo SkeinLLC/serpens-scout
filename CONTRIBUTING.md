@@ -9,4 +9,15 @@ Keep contributions passive, reproducible, and source-linked.
 5. Label inference as inference. A DNS answer or shared cloud address is not actor
    attribution.
 
-Run `pytest` and `ruff check .` before opening a pull request.
+Install the hash-locked audit environment, then run every gate before opening a pull request:
+
+```powershell
+python -m pip install --require-hashes -r requirements-build.lock
+python -m pip install --require-hashes -r requirements-ci.lock
+python -m pip install --no-build-isolation --no-deps -e .
+ruff check .
+bandit -r src -q
+pip-audit --require-hashes -r requirements-ci.lock --progress-spinner off
+zizmor --persona auditor .
+pytest
+```
