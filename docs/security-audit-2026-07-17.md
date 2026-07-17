@@ -33,7 +33,7 @@ redirects, malformed JSON, and source-page drift.
 
 | Check | Version or revision | Final result |
 |---|---|---|
-| GitCred | upstream commit `d09516bb409656a98bbb005207801f7a58dcc51a` | 0 production Bandit findings; 37 low-severity `B101` records came from test assertions. Its Flake8 pass reported 106 style differences against a 79-character line limit; the project uses Ruff with a 100-character limit. |
+| GitCred | upstream commit `d09516bb409656a98bbb005207801f7a58dcc51a` | 0 production Bandit findings; 40 low-severity `B101` records came from test assertions. Its Flake8 pass reported 107 style differences against a 79-character line limit; the project uses Ruff with a 100-character limit. |
 | Bandit | 1.9.4 | 0 findings under `src/`. |
 | Ruff | 0.15.22 | Pass with the `S` security rule family enabled. |
 | pip-audit | 2.10.1 | No known vulnerability in the hash-locked CI or runtime sets. |
