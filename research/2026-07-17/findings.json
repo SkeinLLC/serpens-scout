@@ -16,7 +16,7 @@
         },
         {
           "data": "waws-prod-dm1-351-84b1.centralus.cloudapp.azure.com.",
-          "ttl": 6,
+          "ttl": 60,
           "type": 5
         },
         {
@@ -200,6 +200,7 @@
     }
   ],
   "github": {
+    "errors": [],
     "queries": [
       {
         "incomplete_results": false,
@@ -815,7 +816,7 @@
       ]
     },
     "delta_definition": "present in Check Point Research IOC section, absent from Unit 42 IOC section",
-    "fetched_at": "2026-07-17T06:37:51.585390+00:00",
+    "fetched_at": "2026-07-17T06:45:12.232708+00:00",
     "overlap": {
       "domains": [
         "buisness-centeral-transportation.azurewebsites.net",
@@ -858,7 +859,7 @@
     "sources": {
       "checkpoint": {
         "content_sha256": "b4a2b50d0dffee32f09f72fc797fad144f1fd354cd48493cff782bc901c4eb31",
-        "fetched_at": "2026-07-17T06:37:51.585390+00:00",
+        "fetched_at": "2026-07-17T06:45:12.232708+00:00",
         "iocs": {
           "domain_anomalies": [],
           "domains": [
@@ -934,7 +935,7 @@
       },
       "unit42": {
         "content_sha256": "a9d7a5f243394ae42fb86fd8ae5b6412e81ed1a605a7584c3eae1484ef2efce5",
-        "fetched_at": "2026-07-17T06:37:51.585390+00:00",
+        "fetched_at": "2026-07-17T06:45:12.232708+00:00",
         "iocs": {
           "domain_anomalies": [
             "connection.dll",

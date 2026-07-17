@@ -30,6 +30,10 @@ Each report fetch records its retrieval time and SHA-256 content digest. Extract
 to the report's IOC section. A change in source layout should be treated as a failed or suspicious
 run, not silently accepted as a campaign change.
 
+The report fetch is mandatory. DNS and GitHub enrichment are optional: bounded retry handles
+HTTP 429 responses, after which the collector writes an explicit partial-result error and keeps
+the report-diff output. A failed enrichment call never becomes a negative finding.
+
 ## Configuration test
 
 AppDomainManager is legitimate .NET functionality. Element-name presence alone is inadequate.

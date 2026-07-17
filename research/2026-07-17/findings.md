@@ -1,6 +1,6 @@
 # Screening Serpens research findings
 
-Run time: `2026-07-17T06:37:51.585390+00:00`
+Run time: `2026-07-17T06:45:12.232708+00:00`
 
 ## Executive finding
 
@@ -10,10 +10,7 @@ correction**, and **15 SHA-256 additions** relative to Unit 42's IOC section.
 These are set differences, not claims of previously unknown infrastructure or independent Skein
 LLC attribution.
 
-The value-aware configuration test also matters: public code can contain the
-AppDomainManager-related element names without the malicious values. In the sampled GitHub
-baseline, verdicts were `{'no-match': 36, 'context-only': 3, 'invalid-xml': 1}`. A presence-only signature would therefore overstate
-risk.
+Public code can contain the AppDomainManager-related element names without the malicious values. Sampled verdicts were `{'no-match': 36, 'context-only': 3, 'invalid-xml': 1}`; a presence-only signature would overstate risk.
 
 ## Collection receipt
 
@@ -64,7 +61,8 @@ hashes.
 
 Exact-name DNS-over-HTTPS queries returned an answer for **8 of 10** delta
 domains. IP addresses in `findings.json` are hosting observations only. They are not promoted
-to IOCs because Azure hosting addresses are shared infrastructure.
+to IOCs because Azure hosting addresses are shared infrastructure. Collection errors:
+**0**.
 
 ## Public-code prevalence check
 
@@ -74,7 +72,8 @@ to IOCs because Azure hosting addresses are shared infrastructure.
 - `"publisherPolicy" "apply=\"no\"" extension:config`: **1338** results
 - `"appDomainManagerType" "etwEnable" "bypassTrustedAppStrongNames" extension:config`: **9** results
 
-Sampled verdict counts: `{'no-match': 36, 'context-only': 3, 'invalid-xml': 1}`. GitHub Code Search is a convenience sample, not a
+Collector status: **complete**; errors: **0**. Sampled
+verdict counts: `{'no-match': 36, 'context-only': 3, 'invalid-xml': 1}`. GitHub Code Search is a convenience sample, not a
 statistically representative known-good corpus. It supports the narrow conclusion that values,
 not element-name presence, must drive the config signature.
 

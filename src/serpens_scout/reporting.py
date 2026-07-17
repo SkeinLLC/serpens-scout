@@ -38,6 +38,18 @@ def build_markdown(result: dict[str, object]) -> str:
         query_lines.append(f"- `{query['query']}`: **{query['total_count']}** results")
     github_text = "\n".join(query_lines) if query_lines else f"- {github.get('reason', 'not run')}"
     dns_live = sum(1 for item in dns if item.get("answers"))
+    dns_errors = sum(1 for item in dns if item.get("status") == "collection-error")
+    github_errors = len(github.get("errors", []))
+    if github.get("samples"):
+        github_finding = (
+            "Public code can contain the AppDomainManager-related element names without the "
+            f"malicious values. Sampled verdicts were `{dict(verdicts)}`; a presence-only "
+            "signature would overstate risk."
+        )
+    else:
+        github_finding = (
+            "The public-code sample did not complete, so this run makes no prevalence claim."
+        )
     unit_receipt = sources["unit42"]["content_sha256"]
     check_receipt = sources["checkpoint"]["content_sha256"]
     unit_counts = (len(unit_iocs["domains"]), len(unit_iocs["sha256"]))
@@ -63,10 +75,7 @@ correction**, and **{len(delta['sha256'])} SHA-256 additions** relative to Unit 
 These are set differences, not claims of previously unknown infrastructure or independent Skein
 LLC attribution.
 
-The value-aware configuration test also matters: public code can contain the
-AppDomainManager-related element names without the malicious values. In the sampled GitHub
-baseline, verdicts were `{dict(verdicts)}`. A presence-only signature would therefore overstate
-risk.
+{github_finding}
 
 ## Collection receipt
 
@@ -94,13 +103,15 @@ hashes.
 
 Exact-name DNS-over-HTTPS queries returned an answer for **{dns_live} of {len(dns)}** delta
 domains. IP addresses in `findings.json` are hosting observations only. They are not promoted
-to IOCs because Azure hosting addresses are shared infrastructure.
+to IOCs because Azure hosting addresses are shared infrastructure. Collection errors:
+**{dns_errors}**.
 
 ## Public-code prevalence check
 
 {github_text}
 
-Sampled verdict counts: `{dict(verdicts)}`. GitHub Code Search is a convenience sample, not a
+Collector status: **{github.get('status', 'unknown')}**; errors: **{github_errors}**. Sampled
+verdict counts: `{dict(verdicts)}`. GitHub Code Search is a convenience sample, not a
 statistically representative known-good corpus. It supports the narrow conclusion that values,
 not element-name presence, must drive the config signature.
 

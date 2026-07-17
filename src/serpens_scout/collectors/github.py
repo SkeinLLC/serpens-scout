@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import base64
 import os
+import time
 import urllib.parse
 
 from serpens_scout.collectors.http import get_json
@@ -37,8 +38,21 @@ def collect_github_baseline(limit: int = 20) -> dict[str, object]:
         return {"status": "skipped", "reason": "GITHUB_TOKEN is not set", "queries": []}
     query_results: list[dict[str, object]] = []
     broad_items: list[dict[str, object]] = []
+    errors: list[str] = []
     for index, query in enumerate(QUERIES):
-        result = _search(query, token, min(limit if index == 0 else 1, 100))
+        try:
+            result = _search(query, token, min(limit if index == 0 else 1, 100))
+        except (OSError, RuntimeError, ValueError) as exc:
+            errors.append(f"query failed: {query}: {exc}")
+            query_results.append(
+                {
+                    "query": query,
+                    "total_count": 0,
+                    "incomplete_results": True,
+                    "error": str(exc),
+                }
+            )
+            continue
         query_results.append(
             {
                 "query": query,
@@ -48,10 +62,15 @@ def collect_github_baseline(limit: int = 20) -> dict[str, object]:
         )
         if index == 0:
             broad_items = result.get("items", [])[:limit]
+        time.sleep(0.15)
 
     samples: list[dict[str, object]] = []
     for item in broad_items:
-        content = get_json(str(item["url"]), _headers(token))
+        try:
+            content = get_json(str(item["url"]), _headers(token))
+        except (OSError, RuntimeError, ValueError) as exc:
+            errors.append(f"content fetch failed: {item.get('html_url', 'unknown')}: {exc}")
+            continue
         if content.get("encoding") != "base64" or not content.get("content"):
             continue
         data = base64.b64decode(str(content["content"]))
@@ -64,10 +83,12 @@ def collect_github_baseline(limit: int = 20) -> dict[str, object]:
                 "scan": scan.to_dict(),
             }
         )
+        time.sleep(0.05)
     return {
-        "status": "complete",
+        "status": "partial" if errors else "complete",
         "scope": "public GitHub Code Search; sampled results are not a known-good corpus",
         "queries": query_results,
         "sample_count": len(samples),
         "samples": samples,
+        "errors": errors,
     }

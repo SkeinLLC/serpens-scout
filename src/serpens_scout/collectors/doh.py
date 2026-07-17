@@ -11,7 +11,19 @@ def resolve_domains(domains: list[str]) -> list[dict[str, object]]:
     observations: list[dict[str, object]] = []
     for domain in sorted(set(domains)):
         query = urllib.parse.urlencode({"name": domain, "type": "A"})
-        response = get_json(f"https://dns.google/resolve?{query}")
+        try:
+            response = get_json(f"https://dns.google/resolve?{query}")
+        except (OSError, RuntimeError, ValueError) as exc:
+            observations.append(
+                {
+                    "domain": domain,
+                    "status": "collection-error",
+                    "answers": [],
+                    "error": str(exc),
+                    "assessment": "no DNS conclusion; collection failed",
+                }
+            )
+            continue
         answers = [
             {"data": answer.get("data"), "ttl": answer.get("TTL"), "type": answer.get("type")}
             for answer in response.get("Answer", [])

@@ -33,7 +33,7 @@ def hunt(output: Path, github_limit: int = 20, skip_dns: bool = False) -> dict[s
     (output / "serpens.stix.json").write_text(
         json.dumps(build_bundle(reports), indent=2, sort_keys=True), encoding="utf-8"
     )
-    if github.get("status") == "complete":
+    if github.get("status") in {"complete", "partial"}:
         (output / "github-baseline.json").write_text(
             json.dumps(github, indent=2, sort_keys=True), encoding="utf-8"
         )
