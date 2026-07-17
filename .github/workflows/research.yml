@@ -12,8 +12,8 @@ jobs:
   hunt:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
           cache: pip
@@ -22,7 +22,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: serpens-scout hunt --out research-output --github-limit 40
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: serpens-scout-${{ github.run_id }}
           path: research-output/
