@@ -1,0 +1,28 @@
+name: test
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: ruff check .
+      - run: pytest
+      - name: Validate YARA rule and fixtures
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq yara
+          yara rules/yara/appdomainmanager_serpens_config.yar tests/fixtures/serpens.config \
+            | grep DotNet_AppDomainManager
+          test -z "$(yara rules/yara/appdomainmanager_serpens_config.yar tests/fixtures/legitimate.config)"

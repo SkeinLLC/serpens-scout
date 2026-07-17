@@ -1,0 +1,34 @@
+// Config created beside a recently observed executable. File content scanning must confirm values.
+DeviceFileEvents
+| where Timestamp > ago(30d)
+| where FileName endswith ".exe.config"
+| extend HostExecutable = replace_string(FileName, ".config", "")
+| join kind=inner (
+    DeviceFileEvents
+    | where Timestamp > ago(30d)
+    | where FileName endswith ".exe"
+    | project DeviceId, HostExecutable=FileName, ExecutablePath=FolderPath, ExecutableTime=Timestamp
+) on DeviceId, HostExecutable
+| where abs(datetime_diff("hour", Timestamp, ExecutableTime)) <= 24
+| project Timestamp, DeviceName, ConfigPath=FolderPath, FileName, ExecutablePath, SHA256
+
+// Svchost parent with host names reported in the Screening Serpens execution chain.
+DeviceProcessEvents
+| where Timestamp > ago(30d)
+| where InitiatingProcessFileName =~ "svchost.exe"
+| where FileName in~ ("update.exe", "SoftwareLicencing.exe")
+| project Timestamp, DeviceName, FileName, FolderPath, ProcessCommandLine,
+          InitiatingProcessCommandLine, SHA256
+
+// Signed executable loading an unsigned DLL from a user-writable directory.
+DeviceImageLoadEvents
+| where Timestamp > ago(30d)
+| where InitiatingProcessFileName in~ ("update.exe", "SoftwareLicencing.exe")
+| where FolderPath has_any ("\\AppData\\", "\\Downloads\\", "\\Temp\\")
+| join kind=leftouter (
+    DeviceFileCertificateInfo
+    | project DeviceId, SHA1, IsSigned, IsTrusted, Signer
+) on DeviceId, SHA1
+| where IsSigned == false or IsTrusted == false
+| project Timestamp, DeviceName, InitiatingProcessFileName, FileName, FolderPath,
+          SHA1, IsSigned, IsTrusted, Signer

@@ -1,0 +1,32 @@
+title: Suspicious .NET Host Loads Local DLL After AppDomainManager Configuration Change
+id: 04a91e93-a58d-4a7c-bbf3-57e1eb39b72e
+status: experimental
+description: >-
+  Detects a Microsoft-signed .NET host loading a DLL from a user-writable location near a
+  newly created executable configuration file. Tune the host allowlist before production use.
+references:
+  - https://unit42.paloaltonetworks.com/tracking-iran-apt-screening-serpens/
+author: Skein LLC
+date: 2026-07-17
+tags:
+  - attack.defense-evasion
+  - attack.t1574
+logsource:
+  category: image_load
+  product: windows
+detection:
+  selection_image:
+    Image|endswith:
+      - '\\update.exe'
+      - '\\SoftwareLicencing.exe'
+  selection_module_path:
+    ImageLoaded|contains:
+      - '\\AppData\\'
+      - '\\Downloads\\'
+      - '\\Temp\\'
+  filter_signed_module:
+    Signed: 'true'
+  condition: selection_image and selection_module_path and not filter_signed_module
+falsepositives:
+  - Legitimate software with private unsigned .NET dependencies in user-writable paths
+level: high

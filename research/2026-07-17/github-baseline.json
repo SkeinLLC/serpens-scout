@@ -1,0 +1,582 @@
+{
+  "queries": [
+    {
+      "incomplete_results": false,
+      "query": "appDomainManagerType extension:config",
+      "total_count": 82
+    },
+    {
+      "incomplete_results": false,
+      "query": "\"etwEnable\" \"enabled=\\\"false\\\"\" extension:config",
+      "total_count": 21
+    },
+    {
+      "incomplete_results": false,
+      "query": "bypassTrustedAppStrongNames extension:config",
+      "total_count": 247
+    },
+    {
+      "incomplete_results": false,
+      "query": "\"publisherPolicy\" \"apply=\\\"no\\\"\" extension:config",
+      "total_count": 1338
+    },
+    {
+      "incomplete_results": false,
+      "query": "\"appDomainManagerType\" \"etwEnable\" \"bypassTrustedAppStrongNames\" extension:config",
+      "total_count": 9
+    }
+  ],
+  "sample_count": 40,
+  "samples": [
+    {
+      "html_url": "https://github.com/dotnet/roslyn/blob/c0ea18ac9ba210498119a3708d451732be37120a/src/Tools/AnalyzerRunner/app.config",
+      "path": "src/Tools/AnalyzerRunner/app.config",
+      "repository": "dotnet/roslyn",
+      "scan": {
+        "error": null,
+        "path": "dotnet/roslyn:src/Tools/AnalyzerRunner/app.config",
+        "score": 0,
+        "signals": [],
+        "values": {},
+        "verdict": "no-match"
+      }
+    },
+    {
+      "html_url": "https://github.com/nullbind/Powershellery/blob/a6ffb79ec1a6d492661c4a9c1682fb4cf0a36f39/Brainstorming/scriptrunner.exe.config",
+      "path": "Brainstorming/scriptrunner.exe.config",
+      "repository": "nullbind/Powershellery",
+      "scan": {
+        "error": null,
+        "path": "nullbind/Powershellery:Brainstorming/scriptrunner.exe.config",
+        "score": 0,
+        "signals": [],
+        "values": {
+          "privatePath": "C:\\%TMP%"
+        },
+        "verdict": "no-match"
+      }
+    },
+    {
+      "html_url": "https://github.com/microsoft/service-fabric/blob/a8027b7238f589bdc468392dad01b6c57a69f8ed/src/prod/src/managed/Api/Dlls/System.Fabric/EntryPointManager.config",
+      "path": "src/prod/src/managed/Api/Dlls/System.Fabric/EntryPointManager.config",
+      "repository": "microsoft/service-fabric",
+      "scan": {
+        "error": null,
+        "path": "microsoft/service-fabric:src/prod/src/managed/Api/Dlls/System.Fabric/EntryPointManager.config",
+        "score": 25,
+        "signals": [
+          "custom_appdomain_manager_assembly",
+          "custom_appdomain_manager_type"
+        ],
+        "values": {
+          "appDomainManagerAssembly": "System.Fabric",
+          "appDomainManagerType": "System.Fabric.Hosting.FabricHostEntryPoint"
+        },
+        "verdict": "context-only"
+      }
+    },
+    {
+      "html_url": "https://github.com/pwn1sher/frostbyte/blob/d04b815b01623e317ff534c3ac3ef03bd86f477a/Update.exe.config",
+      "path": "Update.exe.config",
+      "repository": "pwn1sher/frostbyte",
+      "scan": {
+        "error": null,
+        "path": "pwn1sher/frostbyte:Update.exe.config",
+        "score": 0,
+        "signals": [],
+        "values": {
+          "privatePath": "Z:\\"
+        },
+        "verdict": "no-match"
+      }
+    },
+    {
+      "html_url": "https://github.com/weaselsec/ClickOnce-AppDomain-Manager-Injection/blob/0ca6c4b68c98e76695b20379d8c077175bddbb1b/Filehistory.exe.config",
+      "path": "Filehistory.exe.config",
+      "repository": "weaselsec/ClickOnce-AppDomain-Manager-Injection",
+      "scan": {
+        "error": null,
+        "path": "weaselsec/ClickOnce-AppDomain-Manager-Injection:Filehistory.exe.config",
+        "score": 25,
+        "signals": [
+          "etw_disabled"
+        ],
+        "values": {
+          "etwEnable": "false"
+        },
+        "verdict": "context-only"
+      }
+    },
+    {
+      "html_url": "https://github.com/KirillOsenkov/MSBuildStructuredLog/blob/35ad19d10848f3496820e2c6feab5a3a78d48779/src/TaskRunner/app.config",
+      "path": "src/TaskRunner/app.config",
+      "repository": "KirillOsenkov/MSBuildStructuredLog",
+      "scan": {
+        "error": null,
+        "path": "KirillOsenkov/MSBuildStructuredLog:src/TaskRunner/app.config",
+        "score": 0,
+        "signals": [],
+        "values": {},
+        "verdict": "no-match"
+      }
+    },
+    {
+      "html_url": "https://github.com/TheWover/GhostLoader/blob/6be8ffdf561eda9cdde7c2641dc78943aba05593/filehistory.exe.config",
+      "path": "filehistory.exe.config",
+      "repository": "TheWover/GhostLoader",
+      "scan": {
+        "error": null,
+        "path": "TheWover/GhostLoader:filehistory.exe.config",
+        "score": 0,
+        "signals": [],
+        "values": {
+          "privatePath": "C:\\Tools"
+        },
+        "verdict": "no-match"
+      }
+    },
+    {
+      "html_url": "https://github.com/RaDeN4917/RaDeN/blob/a5ea6cb25db9295fe58812da79146fa8b2e226fa/SSMS/Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/DTExecUI.exe.config",
+      "path": "SSMS/Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/DTExecUI.exe.config",
+      "repository": "RaDeN4917/RaDeN",
+      "scan": {
+        "error": null,
+        "path": "RaDeN4917/RaDeN:SSMS/Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/DTExecUI.exe.config",
+        "score": 0,
+        "signals": [],
+        "values": {},
+        "verdict": "no-match"
+      }
+    },
+    {
+      "html_url": "https://github.com/RDZrahimster2006/Bellahcene_Mohamed-Rahim_TP_Pizza/blob/19d3c51f5c6e3fbef7de17077bbd4ac91f269325/Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/DTSInstall.exe.config",
+      "path": "Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/DTSInstall.exe.config",
+      "repository": "RDZrahimster2006/Bellahcene_Mohamed-Rahim_TP_Pizza",
+      "scan": {
+        "error": null,
+        "path": "RDZrahimster2006/Bellahcene_Mohamed-Rahim_TP_Pizza:Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/DTSInstall.exe.config",
+        "score": 0,
+        "signals": [],
+        "values": {},
+        "verdict": "no-match"
+      }
+    },
+    {
+      "html_url": "https://github.com/RussDev7/CastleForge/blob/0cc61701563a07f78397329e5a579a5c0d767cfa/CastleForge/ModLoaderFramework/ModLoader/Deployment/CastleMinerZ.exe.config",
+      "path": "CastleForge/ModLoaderFramework/ModLoader/Deployment/CastleMinerZ.exe.config",
+      "repository": "RussDev7/CastleForge",
+      "scan": {
+        "error": null,
+        "path": "RussDev7/CastleForge:CastleForge/ModLoaderFramework/ModLoader/Deployment/CastleMinerZ.exe.config",
+        "score": 0,
+        "signals": [],
+        "values": {
+          "privatePath": "!Mods"
+        },
+        "verdict": "no-match"
+      }
+    },
+    {
+      "html_url": "https://github.com/blacklanternsecurity/bls-bible/blob/b4507f61afecfcb82f444649d886dfc4d4e6cc16/Data/Testaments_and_Books/Redvelations/Windows/Payloads/file.exe.config",
+      "path": "Data/Testaments_and_Books/Redvelations/Windows/Payloads/file.exe.config",
+      "repository": "blacklanternsecurity/bls-bible",
+      "scan": {
+        "error": "not well-formed (invalid token): line 2, column 4",
+        "path": "blacklanternsecurity/bls-bible:Data/Testaments_and_Books/Redvelations/Windows/Payloads/file.exe.config",
+        "score": 0,
+        "signals": [],
+        "values": {},
+        "verdict": "invalid-xml"
+      }
+    },
+    {
+      "html_url": "https://github.com/DW2MC/DW2ModLoader/blob/1dfef8dc827dfd8f5fe87545e1ab50277f826040/ReleaseTemplate/DistantWorlds2.exe.config",
+      "path": "ReleaseTemplate/DistantWorlds2.exe.config",
+      "repository": "DW2MC/DW2ModLoader",
+      "scan": {
+        "error": null,
+        "path": "DW2MC/DW2ModLoader:ReleaseTemplate/DistantWorlds2.exe.config",
+        "score": 0,
+        "signals": [],
+        "values": {},
+        "verdict": "no-match"
+      }
+    },
+    {
+      "html_url": "https://github.com/lodejard/DefaultDomainTests/blob/d5a10c59adb82cdc6eb84539c7d03de742c32420/DefaultDomainTests/App.config",
+      "path": "DefaultDomainTests/App.config",
+      "repository": "lodejard/DefaultDomainTests",
+      "scan": {
+        "error": null,
+        "path": "lodejard/DefaultDomainTests:DefaultDomainTests/App.config",
+        "score": 0,
+        "signals": [],
+        "values": {},
+        "verdict": "no-match"
+      }
+    },
+    {
+      "html_url": "https://github.com/rvrsh3ll/ClickOnce-Commander/blob/fda116e2b8ab73a309aa054fde9565c68ee3f76a/Bolthole/WebDeploy/Install/PerfWatson2.exe.config",
+      "path": "Bolthole/WebDeploy/Install/PerfWatson2.exe.config",
+      "repository": "rvrsh3ll/ClickOnce-Commander",
+      "scan": {
+        "error": null,
+        "path": "rvrsh3ll/ClickOnce-Commander:Bolthole/WebDeploy/Install/PerfWatson2.exe.config",
+        "score": 0,
+        "signals": [],
+        "values": {
+          "privatePath": "C:\\Windows\\Tasks"
+        },
+        "verdict": "no-match"
+      }
+    },
+    {
+      "html_url": "https://github.com/quix0te-tf29/BANNERQOL/blob/eb09fc0e97fb123937a6be60f20ac9a9e60d1734/Includes/TaleWorlds.MountAndBlade.Launcher.exe.config",
+      "path": "Includes/TaleWorlds.MountAndBlade.Launcher.exe.config",
+      "repository": "quix0te-tf29/BANNERQOL",
+      "scan": {
+        "error": null,
+        "path": "quix0te-tf29/BANNERQOL:Includes/TaleWorlds.MountAndBlade.Launcher.exe.config",
+        "score": 0,
+        "signals": [],
+        "values": {},
+        "verdict": "no-match"
+      }
+    },
+    {
+      "html_url": "https://github.com/GitMyCode/electron-aspnet-boilerplate/blob/a0773d213051e805541c3c4f78a34d34cb6b1380/HelloMvc/bin/output/approot/runtimes/dnx-clr-win-x86.1.0.0-beta5/bin/dnx.clr.config",
+      "path": "HelloMvc/bin/output/approot/runtimes/dnx-clr-win-x86.1.0.0-beta5/bin/dnx.clr.config",
+      "repository": "GitMyCode/electron-aspnet-boilerplate",
+      "scan": {
+        "error": null,
+        "path": "GitMyCode/electron-aspnet-boilerplate:HelloMvc/bin/output/approot/runtimes/dnx-clr-win-x86.1.0.0-beta5/bin/dnx.clr.config",
+        "score": 0,
+        "signals": [],
+        "values": {},
+        "verdict": "no-match"
+      }
+    },
+    {
+      "html_url": "https://github.com/steveisok/webforms-kestrel/blob/70bc534202d339ba42d1632f55a781099846f704/app.config",
+      "path": "app.config",
+      "repository": "steveisok/webforms-kestrel",
+      "scan": {
+        "error": null,
+        "path": "steveisok/webforms-kestrel:app.config",
+        "score": 0,
+        "signals": [],
+        "values": {},
+        "verdict": "no-match"
+      }
+    },
+    {
+      "html_url": "https://github.com/NetSPI/ESC/blob/bc61282f2a36a9d300256b38c2e6c6e09b179579/AppDomain-Hijack-Templates/AppDomainHijack.exe.config",
+      "path": "AppDomain-Hijack-Templates/AppDomainHijack.exe.config",
+      "repository": "NetSPI/ESC",
+      "scan": {
+        "error": null,
+        "path": "NetSPI/ESC:AppDomain-Hijack-Templates/AppDomainHijack.exe.config",
+        "score": 0,
+        "signals": [],
+        "values": {
+          "privatePath": "C:\\temp"
+        },
+        "verdict": "no-match"
+      }
+    },
+    {
+      "html_url": "https://github.com/RDZrahimster2006/Bellahcene_Mohamed-Rahim_TP_Pizza/blob/19d3c51f5c6e3fbef7de17077bbd4ac91f269325/Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/DTExec.exe.config",
+      "path": "Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/DTExec.exe.config",
+      "repository": "RDZrahimster2006/Bellahcene_Mohamed-Rahim_TP_Pizza",
+      "scan": {
+        "error": null,
+        "path": "RDZrahimster2006/Bellahcene_Mohamed-Rahim_TP_Pizza:Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/DTExec.exe.config",
+        "score": 0,
+        "signals": [],
+        "values": {},
+        "verdict": "no-match"
+      }
+    },
+    {
+      "html_url": "https://github.com/mistachkin/eagle/blob/49f96370059ed7f108ae6401f7d77fe25588a15a/Shell/Configurations/netFx/EagleShell.exe.config",
+      "path": "Shell/Configurations/netFx/EagleShell.exe.config",
+      "repository": "mistachkin/eagle",
+      "scan": {
+        "error": null,
+        "path": "mistachkin/eagle:Shell/Configurations/netFx/EagleShell.exe.config",
+        "score": 0,
+        "signals": [],
+        "values": {},
+        "verdict": "no-match"
+      }
+    },
+    {
+      "html_url": "https://github.com/jackwakefield/STAB/blob/bfd19b07a650c993fd61bf4ffb0f6b91ca9f61fa/TheyAreBillions.exe.config",
+      "path": "TheyAreBillions.exe.config",
+      "repository": "jackwakefield/STAB",
+      "scan": {
+        "error": null,
+        "path": "jackwakefield/STAB:TheyAreBillions.exe.config",
+        "score": 15,
+        "signals": [
+          "local_private_path"
+        ],
+        "values": {
+          "privatePath": ".;STAB"
+        },
+        "verdict": "context-only"
+      }
+    },
+    {
+      "html_url": "https://github.com/RaDeN4917/RaDeN/blob/a5ea6cb25db9295fe58812da79146fa8b2e226fa/SSMS/Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/ISIRCreationWizard.exe.config",
+      "path": "SSMS/Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/ISIRCreationWizard.exe.config",
+      "repository": "RaDeN4917/RaDeN",
+      "scan": {
+        "error": null,
+        "path": "RaDeN4917/RaDeN:SSMS/Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/ISIRCreationWizard.exe.config",
+        "score": 0,
+        "signals": [],
+        "values": {},
+        "verdict": "no-match"
+      }
+    },
+    {
+      "html_url": "https://github.com/bgourlie/noBS/blob/56c082b73644d201be51dcf0900a9c2e2267e357/server/src/AzureDeployDeps/KRE-CLR-x86.1.0.0-beta1/bin/klr.net45.config",
+      "path": "server/src/AzureDeployDeps/KRE-CLR-x86.1.0.0-beta1/bin/klr.net45.config",
+      "repository": "bgourlie/noBS",
+      "scan": {
+        "error": null,
+        "path": "bgourlie/noBS:server/src/AzureDeployDeps/KRE-CLR-x86.1.0.0-beta1/bin/klr.net45.config",
+        "score": 0,
+        "signals": [],
+        "values": {},
+        "verdict": "no-match"
+      }
+    },
+    {
+      "html_url": "https://github.com/MarkoKacprzak/omnisharp-server-roslyn-binaries/blob/822b9a511fec39da03d61fc226ef9d3e3f8939fb/lib/server/approot/packages/kre-clr-win-x86.1.0.0-beta3/bin/kre.clr.config",
+      "path": "lib/server/approot/packages/kre-clr-win-x86.1.0.0-beta3/bin/kre.clr.config",
+      "repository": "MarkoKacprzak/omnisharp-server-roslyn-binaries",
+      "scan": {
+        "error": null,
+        "path": "MarkoKacprzak/omnisharp-server-roslyn-binaries:lib/server/approot/packages/kre-clr-win-x86.1.0.0-beta3/bin/kre.clr.config",
+        "score": 0,
+        "signals": [],
+        "values": {},
+        "verdict": "no-match"
+      }
+    },
+    {
+      "html_url": "https://github.com/KirillOsenkov/SourceBrowser/blob/8a971011bc88ff014f8e87b152ddb94bf4b83cd1/src/HtmlGenerator/app.config",
+      "path": "src/HtmlGenerator/app.config",
+      "repository": "KirillOsenkov/SourceBrowser",
+      "scan": {
+        "error": null,
+        "path": "KirillOsenkov/SourceBrowser:src/HtmlGenerator/app.config",
+        "score": 0,
+        "signals": [],
+        "values": {},
+        "verdict": "no-match"
+      }
+    },
+    {
+      "html_url": "https://github.com/jdruin/F5Eagle/blob/cd2de1ade468847567814becd68c0fdcf2063d72/Shell/Configurations/no_EagleShell.exe.config",
+      "path": "Shell/Configurations/no_EagleShell.exe.config",
+      "repository": "jdruin/F5Eagle",
+      "scan": {
+        "error": null,
+        "path": "jdruin/F5Eagle:Shell/Configurations/no_EagleShell.exe.config",
+        "score": 0,
+        "signals": [],
+        "values": {},
+        "verdict": "no-match"
+      }
+    },
+    {
+      "html_url": "https://github.com/loudej/crosswalk/blob/0170989fc97e80857e9e816d127eae624eb4da86/src/app/Sandbox/Single.config",
+      "path": "src/app/Sandbox/Single.config",
+      "repository": "loudej/crosswalk",
+      "scan": {
+        "error": null,
+        "path": "loudej/crosswalk:src/app/Sandbox/Single.config",
+        "score": 0,
+        "signals": [],
+        "values": {},
+        "verdict": "no-match"
+      }
+    },
+    {
+      "html_url": "https://github.com/RaDeN4917/RaDeN/blob/a5ea6cb25db9295fe58812da79146fa8b2e226fa/SSMS/Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/DtsHost.exe.config",
+      "path": "SSMS/Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/DtsHost.exe.config",
+      "repository": "RaDeN4917/RaDeN",
+      "scan": {
+        "error": null,
+        "path": "RaDeN4917/RaDeN:SSMS/Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/DtsHost.exe.config",
+        "score": 0,
+        "signals": [],
+        "values": {},
+        "verdict": "no-match"
+      }
+    },
+    {
+      "html_url": "https://github.com/RaDeN4917/RaDeN/blob/a5ea6cb25db9295fe58812da79146fa8b2e226fa/SSMS/Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/DTSInstall.exe.config",
+      "path": "SSMS/Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/DTSInstall.exe.config",
+      "repository": "RaDeN4917/RaDeN",
+      "scan": {
+        "error": null,
+        "path": "RaDeN4917/RaDeN:SSMS/Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/DTSInstall.exe.config",
+        "score": 0,
+        "signals": [],
+        "values": {},
+        "verdict": "no-match"
+      }
+    },
+    {
+      "html_url": "https://github.com/RaDeN4917/RaDeN/blob/a5ea6cb25db9295fe58812da79146fa8b2e226fa/SSMS/Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/ISDataFeedPublishingWizard.exe.config",
+      "path": "SSMS/Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/ISDataFeedPublishingWizard.exe.config",
+      "repository": "RaDeN4917/RaDeN",
+      "scan": {
+        "error": null,
+        "path": "RaDeN4917/RaDeN:SSMS/Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/ISDataFeedPublishingWizard.exe.config",
+        "score": 0,
+        "signals": [],
+        "values": {},
+        "verdict": "no-match"
+      }
+    },
+    {
+      "html_url": "https://github.com/RaDeN4917/RaDeN/blob/a5ea6cb25db9295fe58812da79146fa8b2e226fa/SSMS/Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/DataProfileViewer.exe.config",
+      "path": "SSMS/Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/DataProfileViewer.exe.config",
+      "repository": "RaDeN4917/RaDeN",
+      "scan": {
+        "error": null,
+        "path": "RaDeN4917/RaDeN:SSMS/Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/DataProfileViewer.exe.config",
+        "score": 0,
+        "signals": [],
+        "values": {},
+        "verdict": "no-match"
+      }
+    },
+    {
+      "html_url": "https://github.com/RaDeN4917/RaDeN/blob/a5ea6cb25db9295fe58812da79146fa8b2e226fa/SSMS/Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/SSISUpgrade.exe.config",
+      "path": "SSMS/Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/SSISUpgrade.exe.config",
+      "repository": "RaDeN4917/RaDeN",
+      "scan": {
+        "error": null,
+        "path": "RaDeN4917/RaDeN:SSMS/Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/SSISUpgrade.exe.config",
+        "score": 0,
+        "signals": [],
+        "values": {},
+        "verdict": "no-match"
+      }
+    },
+    {
+      "html_url": "https://github.com/RaDeN4917/RaDeN/blob/a5ea6cb25db9295fe58812da79146fa8b2e226fa/SSMS/Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/DTSWizard.exe.config",
+      "path": "SSMS/Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/DTSWizard.exe.config",
+      "repository": "RaDeN4917/RaDeN",
+      "scan": {
+        "error": null,
+        "path": "RaDeN4917/RaDeN:SSMS/Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/DTSWizard.exe.config",
+        "score": 0,
+        "signals": [],
+        "values": {},
+        "verdict": "no-match"
+      }
+    },
+    {
+      "html_url": "https://github.com/ProteoWizard/pwiz/blob/d4b7ad54bf18194b89e53904528ce4dd29980266/pwiz_tools/Bumbershoot/idpicker/App.config",
+      "path": "pwiz_tools/Bumbershoot/idpicker/App.config",
+      "repository": "ProteoWizard/pwiz",
+      "scan": {
+        "error": null,
+        "path": "ProteoWizard/pwiz:pwiz_tools/Bumbershoot/idpicker/App.config",
+        "score": 0,
+        "signals": [],
+        "values": {},
+        "verdict": "no-match"
+      }
+    },
+    {
+      "html_url": "https://github.com/RaDeN4917/RaDeN/blob/a5ea6cb25db9295fe58812da79146fa8b2e226fa/SSMS/Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/ISProjectWizard.exe.config",
+      "path": "SSMS/Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/ISProjectWizard.exe.config",
+      "repository": "RaDeN4917/RaDeN",
+      "scan": {
+        "error": null,
+        "path": "RaDeN4917/RaDeN:SSMS/Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/ISProjectWizard.exe.config",
+        "score": 0,
+        "signals": [],
+        "values": {},
+        "verdict": "no-match"
+      }
+    },
+    {
+      "html_url": "https://github.com/X-Sharp/XSharpPublic/blob/4c6ac4bba2d8733b5f4bfc3d7cfb59608a8d98cc/src/Roslyn/src/Tools/AnalyzerRunner/app.config",
+      "path": "src/Roslyn/src/Tools/AnalyzerRunner/app.config",
+      "repository": "X-Sharp/XSharpPublic",
+      "scan": {
+        "error": null,
+        "path": "X-Sharp/XSharpPublic:src/Roslyn/src/Tools/AnalyzerRunner/app.config",
+        "score": 0,
+        "signals": [],
+        "values": {},
+        "verdict": "no-match"
+      }
+    },
+    {
+      "html_url": "https://github.com/RaDeN4917/RaDeN/blob/a5ea6cb25db9295fe58812da79146fa8b2e226fa/SSMS/Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/DTUtil.exe.config",
+      "path": "SSMS/Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/DTUtil.exe.config",
+      "repository": "RaDeN4917/RaDeN",
+      "scan": {
+        "error": null,
+        "path": "RaDeN4917/RaDeN:SSMS/Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/DTUtil.exe.config",
+        "score": 0,
+        "signals": [],
+        "values": {},
+        "verdict": "no-match"
+      }
+    },
+    {
+      "html_url": "https://github.com/BUTR/Bannerlord.BLSE/blob/57ff627183a02b75850e8237d3077696deffdf64/src/Bannerlord.BLSE.Loaders.AppDomainManager/_Root/bin/Win64_Shipping_Client/TaleWorlds.MountAndBlade.Launcher.exe.config",
+      "path": "src/Bannerlord.BLSE.Loaders.AppDomainManager/_Root/bin/Win64_Shipping_Client/TaleWorlds.MountAndBlade.Launcher.exe.config",
+      "repository": "BUTR/Bannerlord.BLSE",
+      "scan": {
+        "error": null,
+        "path": "BUTR/Bannerlord.BLSE:src/Bannerlord.BLSE.Loaders.AppDomainManager/_Root/bin/Win64_Shipping_Client/TaleWorlds.MountAndBlade.Launcher.exe.config",
+        "score": 0,
+        "signals": [],
+        "values": {},
+        "verdict": "no-match"
+      }
+    },
+    {
+      "html_url": "https://github.com/RaDeN4917/RaDeN/blob/a5ea6cb25db9295fe58812da79146fa8b2e226fa/SSMS/Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/DTExec.exe.config",
+      "path": "SSMS/Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/DTExec.exe.config",
+      "repository": "RaDeN4917/RaDeN",
+      "scan": {
+        "error": null,
+        "path": "RaDeN4917/RaDeN:SSMS/Common7/IDE/CommonExtensions/Microsoft/SSIS/160/Binn/DTExec.exe.config",
+        "score": 0,
+        "signals": [],
+        "values": {},
+        "verdict": "no-match"
+      }
+    },
+    {
+      "html_url": "https://github.com/rvrsh3ll/Bolthole/blob/c90e87b989606b9351ff56b216185bf82c6ad501/WebDeploy/Install/PerfWatson2.exe.config",
+      "path": "WebDeploy/Install/PerfWatson2.exe.config",
+      "repository": "rvrsh3ll/Bolthole",
+      "scan": {
+        "error": null,
+        "path": "rvrsh3ll/Bolthole:WebDeploy/Install/PerfWatson2.exe.config",
+        "score": 0,
+        "signals": [],
+        "values": {
+          "privatePath": "C:\\Windows\\Tasks"
+        },
+        "verdict": "no-match"
+      }
+    }
+  ],
+  "scope": "public GitHub Code Search; sampled results are not a known-good corpus",
+  "status": "complete"
+}
