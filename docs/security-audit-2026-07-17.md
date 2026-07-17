@@ -41,6 +41,7 @@ redirects, malformed JSON, and source-page drift.
 | Gitleaks | 8.30.1, release checksum verified | No leak in four commits or the working tree. |
 | Pytest | 9.1.1 | 22 passed. |
 | Live collection | Serpens Scout hardened branch | Exit 0; 10 delta domains, 15 delta SHA-256 values, five GitHub samples, and no DNS or GitHub collection error. |
+| Hosted research | Actions run `29584328463` | Exit 0; 10 domain deltas, 15 SHA-256 values, GitHub baseline skipped because no environment secret was present, and artifact `8408324582` uploaded. |
 
 The pre-fix Zizmor run reported 11 workflow issues, including five high-severity mutable-action
 references. The pre-fix production Bandit run reported 13 records: two medium and 11 low. Those
@@ -67,10 +68,12 @@ read-only `SERPENS_GITHUB_TOKEN` secret exists. Report and DNS collection don't 
 
 ## Remaining work
 
-The pull request must pass hosted Python 3.12 CI before merge. The lock files were generated and
-tested locally with Python 3.12.13. After merge, require immutable Action SHAs in repository
-settings and turn on the new protected-branch check. GitHub currently leaves non-provider secret
-patterns and secret-validity checks disabled for this repository.
+Hosted Python 3.12 CI and CodeQL passed on the pull-request branch. The lock files were generated
+and tested locally with Python 3.12.13. Main now requires the test and both CodeQL checks, applies
+the rule to administrators, rejects force pushes and deletion, requires linear history, and
+requires conversation resolution. After merge, require immutable Action SHAs in repository
+settings. GitHub currently leaves non-provider secret patterns and secret-validity checks
+disabled for this repository.
 
 Later research should add parser fuzzing and run the config detector across an approved
 known-good .NET corpus. Those tasks affect assurance and false-positive measurement; they don't
