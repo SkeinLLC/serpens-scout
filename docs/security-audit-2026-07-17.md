@@ -5,7 +5,7 @@
 The audit found no committed secret and no known vulnerable locked dependency. It did find
 code and repository controls that needed correction before wider use. The working branch fixes
 the production-code findings; Bandit, Ruff, Zizmor, pip-audit, Gitleaks, GitCred's Bandit pass,
-21 tests, and a live bounded collection now pass.
+22 tests, and a live bounded collection now pass.
 
 No sample ran during this audit. Network activity stayed within the collector's named public
 services.
@@ -39,7 +39,7 @@ redirects, malformed JSON, and source-page drift.
 | pip-audit | 2.10.1 | No known vulnerability in the hash-locked CI or runtime sets. |
 | Zizmor | 1.27.0 | No finding in the online auditor profile. |
 | Gitleaks | 8.30.1, release checksum verified | No leak in four commits or the working tree. |
-| Pytest | 9.1.1 | 21 passed. |
+| Pytest | 9.1.1 | 22 passed. |
 | Live collection | Serpens Scout hardened branch | Exit 0; 10 delta domains, 15 delta SHA-256 values, five GitHub samples, and no DNS or GitHub collection error. |
 
 The pre-fix Zizmor run reported 11 workflow issues, including five high-severity mutable-action

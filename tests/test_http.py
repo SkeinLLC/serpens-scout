@@ -7,6 +7,7 @@ from serpens_scout.collectors.http import (
     MAX_RESPONSE_BYTES,
     _AllowlistedRedirectHandler,
     _read_bounded,
+    _retry_delay,
     get_bytes,
     get_json,
 )
@@ -74,3 +75,10 @@ def test_json_client_rejects_non_object_response(monkeypatch) -> None:
     )
     with pytest.raises(ValueError, match="must be an object"):
         get_json("https://api.github.com/")
+
+
+def test_retry_delay_honors_rate_limit_reset_and_caps_wait(monkeypatch) -> None:
+    monkeypatch.setattr("serpens_scout.collectors.http.time.time", lambda: 100.0)
+    assert _retry_delay({"X-RateLimit-Reset": "120"}, 0) == 21.0
+    assert _retry_delay({"Retry-After": "90"}, 0) == 65.0
+    assert _retry_delay({}, 2) == 2.0

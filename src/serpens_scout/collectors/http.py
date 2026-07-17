@@ -17,6 +17,7 @@ ALLOWED_HOSTS = {
 }
 USER_AGENT = "serpens-scout/0.1 (+https://github.com/SkeinLLC/serpens-scout)"
 MAX_RESPONSE_BYTES = 10 * 1024 * 1024
+MAX_RETRY_DELAY_SECONDS = 65.0
 
 
 def _validate_url(url: str) -> urllib.parse.ParseResult:
@@ -63,6 +64,18 @@ def _read_bounded(response, limit: int = MAX_RESPONSE_BYTES) -> bytes:  # noqa: 
     return data
 
 
+def _retry_delay(headers, attempt: int) -> float:  # noqa: ANN001
+    retry_after = headers.get("Retry-After", "")
+    if retry_after.isdigit():
+        return min(float(retry_after), MAX_RETRY_DELAY_SECONDS)
+    reset_at = headers.get("X-RateLimit-Reset", "")
+    if reset_at.isdigit():
+        until_reset = float(reset_at) - time.time() + 1.0
+        if until_reset > 0:
+            return min(until_reset, MAX_RETRY_DELAY_SECONDS)
+    return min(0.5 * (2**attempt), MAX_RETRY_DELAY_SECONDS)
+
+
 def get_bytes(url: str, headers: dict[str, str] | None = None, retries: int = 3) -> bytes:
     parsed = _validate_url(url)
     request_headers = {"User-Agent": USER_AGENT, "Accept": "*/*"}
@@ -75,9 +88,7 @@ def get_bytes(url: str, headers: dict[str, str] | None = None, retries: int = 3)
                 return _read_bounded(response)
         except urllib.error.HTTPError as exc:
             if exc.code == 429 and attempt < retries:
-                retry_after = exc.headers.get("Retry-After", "")
-                delay = float(retry_after) if retry_after.isdigit() else 0.5 * (2**attempt)
-                time.sleep(min(delay, 10.0))
+                time.sleep(_retry_delay(exc.headers, attempt))
                 continue
             raise RuntimeError(f"{parsed.hostname} returned HTTP {exc.code}") from exc
         except (urllib.error.URLError, TimeoutError) as exc:
