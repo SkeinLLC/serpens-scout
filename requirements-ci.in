@@ -2,7 +2,7 @@ bandit==1.9.4
 defusedxml==0.7.1
 pip-audit==2.10.1
 pytest==9.1.1
-ruff==0.15.22
+ruff==0.16.10
 stix2==3.0.2
 stix2-validator==3.3.1
 yara-python==4.5.4
